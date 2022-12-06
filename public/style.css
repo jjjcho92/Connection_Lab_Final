@@ -22,8 +22,8 @@ a:active {
 
 img {
     object-fit: contain;
-    width: 60vh;
-    height: 70vH;
+    width: 70vw;
+    height: 80vh;
 }
 
 .project_container,
@@ -55,6 +55,7 @@ img {
 .middle-2 {
     width: 10%;
 }
+
 
 h1 {
     text-align: center;

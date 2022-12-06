@@ -22,7 +22,8 @@ a:active {
 
 img {
     object-fit: contain;
-    width: 70%;
+    width: 60vh;
+    height: 70vH;
 }
 
 .project_container,
@@ -57,7 +58,7 @@ img {
 
 h1 {
     text-align: center;
-    font: bold 90px Sans-Serif;
+    font: bold 60px Sans-Serif;
     color: rgb(254, 178, 209);
     text-shadow:
         0 1px 0px #378ab4,

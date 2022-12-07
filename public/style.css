@@ -26,6 +26,12 @@ img {
     height: 80vh;
 }
 
+p {
+    text-align: center;
+    font: 400 16px sans-serif;
+    color: #98181c;
+}
+
 .project_container,
 .row {
     display: flex;
@@ -34,6 +40,7 @@ img {
 }
 
 .column {
+    height: auto;
     float: left;
     padding: 10px;
     display: grid;
@@ -52,9 +59,9 @@ img {
     width: 80%;
 }
 
-.middle-2 {
-    width: 10%;
-}
+hr.solid {
+    border: 3px solid #36a2eb;
+  }
 
 
 h1 {
@@ -201,9 +208,14 @@ h1 {
     cursor: auto;
 }
 
+.example_container {
+    display: flex;
+}
+
 .sup-pic {
     width: 30vw;
     height: 30vh;
+    display: inline-block;
 }
 
 

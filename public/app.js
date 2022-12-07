@@ -15,7 +15,6 @@ const questions = [
 window.addEventListener('load', () => {
   displayCount()
 
-
   document.getElementById('yes-b').addEventListener('click', () => {
     assignYesCount(yesCount + 1)
     saveToDb(true)
@@ -27,7 +26,6 @@ window.addEventListener('load', () => {
     saveToDb(false)
     nextQuestion()
   })
-
 })
 
 function displayCount() {
@@ -42,9 +40,8 @@ function displayCount() {
       assignYesCount(yesCount)
       assignNoCount(noCount)
       let elt = document.createElement('p')
-      elt.innerHTML = `${createdAt} || Question-Number: ${currentQuestion} Yes: ${yesCount} NO: ${noCount}`
+      elt.innerHTML = `${createdAt} || Question-Number: ${currentQuestion} Yes: ${yesCount} NO: ${noCount}`   //Ex did this.
       document.getElementById('total-info').appendChild(elt)
-
     })
 
 
@@ -83,7 +80,6 @@ function nextQuestion() {
     window.location.href = "poll_result.html";
     return
   }
-
   const title = questions[currentQuestionId].title
   document.getElementById("pic").src = questions[currentQuestionId].imageSrc;
   document.getElementById("Q-title").innerHTML = title;
@@ -94,255 +90,251 @@ function nextQuestion() {
 // **Results Page (Chart.js)** //
 
 window.addEventListener('load', () => {
+  fetch('/all-counts')
+    .then(resp => resp.json())
+    .then(({ data }) => {
+      const sum = (questionId, key) => {
+        return data.filter(x => x.currentQuestionId === questionId & x[key] > 0)
+          .reduce((accumulator, value) => accumulator + value[key], 0)
+      }
 
-  //Chart1
-  const data1 = [
-    { result: 0, count: 6 },
-    { result: 1, count: 10 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart1'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data1.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart1'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(0, 'yesCount'),
+                  sum(0, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q1: Buddhist Swastika feels weird'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q1: Buddhist Swastika feels weird'
-          }
         }
-      },
-    }
-  )
+      )
 
-  //Chart2
+      //Chart2
 
-  const data2 = [
-    { result: 0, count: 18 },
-    { result: 1, count: 8 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart2'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data2.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart2'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(1, 'yesCount'),
+                  sum(1, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q2: You know Jojo Rabbit (2019)'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q2: You know Jojo Rabbit (2019)'
-          }
         }
-      },
-    }
-  )
+      )
 
-  //Chart3
+      //Chart3
 
-  const data3 = [
-    { result: 0, count: 12 },
-    { result: 1, count: 6 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart3'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data3.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart3'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(2, 'yesCount'),
+                  sum(2, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q3: Japanese 卍 culture is too much'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q3: Japanese 卍 culture is too much'
-          }
         }
-      },
-    }
-  )
+      )
 
-  //Chart4
+      //Chart4
 
-  const data4 = [
-    { result: 0, count: 12 },
-    { result: 1, count: 6 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart4'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data4.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart4'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(3, 'yesCount'),
+                  sum(3, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q4: Finnish Air Force Swastika Is Odd'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q4: Finnish Air Force Swastika Is Odd'
-          }
         }
-      },
-    }
-  )
+      )
 
-  //Chart5
+      //Chart5
 
-  const data5 = [
-    { result: 0, count: 16 },
-    { result: 1, count: 2 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart5'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data5.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart5'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(4, 'yesCount'),
+                  sum(4, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q5: Red Swastika Society Feels Strange'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q5: Red Swastika Society Feels Strange'
-          }
         }
-      },
-    }
-  )
+      )
 
-  //Chart6
+      //Chart6
 
-  const data6 = [
-    { result: 0, count: 12 },
-    { result: 1, count: 6 },
-  ];
-
-  new Chart(
-    document.getElementById('resultChart6'),
-    {
-      type: 'pie',
-      data: {
-        labels: [
-          'Yes',
-          'No',
-        ],
-        datasets: [
-          {
-            label: 'Number of Votes',
-            data: data6.map(row => row.count),
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+      new Chart(
+        document.getElementById('resultChart6'),
+        {
+          type: 'pie',
+          data: {
+            labels: [
+              'Yes',
+              'No',
             ],
+            datasets: [
+              {
+                label: 'Number of Votes',
+                data: [
+                  sum(5, 'yesCount'),
+                  sum(5, 'noCount'),
+                ],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                ],
+              },
+            ]
           },
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Q6: Native American Swastika Makes Me Uncomfortable'
+              }
+            }
           },
-          title: {
-            display: true,
-            text: 'Q6: Native American Swastika Makes Me Uncomfortable'
-          }
         }
-      },
-    }
-  )
+      )
+
+    })
 })

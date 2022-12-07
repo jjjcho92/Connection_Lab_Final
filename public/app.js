@@ -1,71 +1,65 @@
-let yes_count = 0
-let no_count = 0
+let yesCount = 0
+let noCount = 0
+let currentQuestionId = 0
 
-let thePic = 0;
-var QuestionImages = new Array("img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg", "img/6.jpg");
-
-let theTitle = 0;
-var QuestionTitles = new Array("Do you feel a tenny, tiny bit strange seeing it?", "Have you heard of this movie?", "Does this feel a little inappropriate?", "Find it odd if seeing this at the airport today?", "Find it weird if this is a NYU student club photo?", " Be shocked if received this ring as a gift?");
-
-let currentQuestionId = 0;
+const userId = Math.ceil(Math.random() * 100000000)
+const questions = [
+  { title: 'Q1: Do you feel a tenny, tiny bit strange seeing it?', imageSrc: 'img/1B.png' },
+  { title: 'Q2: Have you heard of this movie?', imageSrc: 'img/2.jpg' },
+  { title: 'Q3: Does this feel a little inappropriate?', imageSrc: 'img/3.jpg' },
+  { title: 'Q4: Find it odd seeing this at the airport today?', imageSrc: 'img/4.jpg' },
+  { title: 'Q5: Find it weird if this is a NYU student club photo?', imageSrc: 'img/5.jpg' },
+  { title: 'Q6: Be shocked if received this ring as a gift?', imageSrc: 'img/6.jpg' },
+]
 
 window.addEventListener('load', () => {
   displayCount()
 
-  document.getElementById('yes-b').addEventListener('click', () => {
-    changeTitle()
-    changeImage()
-    assignYesCount(yes_count + 1)
-    saveToDb()
-    displayCount()
-    result()
 
+  document.getElementById('yes-b').addEventListener('click', () => {
+    assignYesCount(yesCount + 1)
+    saveToDb(true)
+    nextQuestion()
   })
 
   document.getElementById('no-b').addEventListener('click', () => {
-    changeTitle()
-    changeImage()
-    assignNoCount(no_count + 1)
-    saveToDb()
-    displayCount()
-    result()
-
+    assignNoCount(noCount + 1)
+    saveToDb(false)
+    nextQuestion()
   })
 
-  document.getElementById('get-tracker').addEventListener('click', () => {
-    displayCount()
-  })
-console.log(currentQuestionId);
-  
 })
-
-
 
 function displayCount() {
   fetch('/counts')
     .then(resp => resp.json())
     .then(data => {
       document.getElementById('total-info').innerHTML = ''
-
       const createdAt = data.data[0].created_at
-      const yesCount = data.data[0].yes_count
-      const noCount = data.data[0].no_count
+      const yesCount = data.data[0].yesCount
+      const noCount = data.data[0].noCount
       const currentQuestion = data.data[0].currentQuestionId
       assignYesCount(yesCount)
       assignNoCount(noCount)
       let elt = document.createElement('p')
-      elt.innerHTML = `${createdAt}: Question-Number: ${currentQuestion} Yes: ${yesCount} NO: ${noCount}`
+      elt.innerHTML = `${createdAt} || Question-Number: ${currentQuestion} Yes: ${yesCount} NO: ${noCount}`
       document.getElementById('total-info').appendChild(elt)
+
     })
 
 
 }
 
-function saveToDb() {
+function saveToDb(isYes = true) {
   fetch('/counts', {
     method: 'POST',
     headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ currentQuestionId, yes_count, no_count })
+    body: JSON.stringify({
+      currentQuestionId,
+      yesCount: isYes ? 1 : 0,
+      noCount: isYes ? 0 : 1,
+      userId
+    })
   })
     .then(response => response.json())
     .then(console.log)
@@ -73,36 +67,282 @@ function saveToDb() {
 }
 
 function assignYesCount(count) {
-  yes_count = count
-  document.getElementById('yes-counter').innerHTML = yes_count
+  yesCount = count
+  document.getElementById('yes-counter').innerHTML = yesCount
 }
 
 function assignNoCount(count) {
-  no_count = count
-  document.getElementById('no-counter').innerHTML = no_count
+  noCount = count
+  document.getElementById('no-counter').innerHTML = noCount
 }
 
-function changeImage() {
-  thePic++;
-  if (thePic == QuestionImages.length) {
-    thePic = 0;
-  }
-  document.getElementById("pic").src = QuestionImages[thePic];
-}
+function nextQuestion() {
+  currentQuestionId++
 
-function changeTitle() {
-  theTitle++;
-  if (theTitle == QuestionTitles.length) {
-    theTitle = 0;
-  }
-  document.getElementById("Q-title").innerHTML = QuestionTitles[theTitle];
-  currentQuestionId = theTitle;
-}
-
-function result() {
-  if (currentQuestionId == 5) {
+  if (currentQuestionId === 6) {
     window.location.href = "poll_result.html";
+    return
   }
+
+  const title = questions[currentQuestionId].title
+  document.getElementById("pic").src = questions[currentQuestionId].imageSrc;
+  document.getElementById("Q-title").innerHTML = title;
 }
 
 
+
+// **Results Page (Chart.js)** //
+
+window.addEventListener('load', () => {
+
+  //Chart1
+  const data1 = [
+    { result: 0, count: 6 },
+    { result: 1, count: 10 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart1'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data1.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q1: Buddhist Swastika feels weird'
+          }
+        }
+      },
+    }
+  )
+
+  //Chart2
+
+  const data2 = [
+    { result: 0, count: 18 },
+    { result: 1, count: 8 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart2'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data2.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q2: You know Jojo Rabbit (2019)'
+          }
+        }
+      },
+    }
+  )
+
+  //Chart3
+
+  const data3 = [
+    { result: 0, count: 12 },
+    { result: 1, count: 6 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart3'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data3.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q3: Japanese 卍 culture is too much'
+          }
+        }
+      },
+    }
+  )
+
+  //Chart4
+
+  const data4 = [
+    { result: 0, count: 12 },
+    { result: 1, count: 6 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart4'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data4.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q4: Finnish Air Force Swastika Is Odd'
+          }
+        }
+      },
+    }
+  )
+
+  //Chart5
+
+  const data5 = [
+    { result: 0, count: 16 },
+    { result: 1, count: 2 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart5'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data5.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q5: Red Swastika Society Feels Strange'
+          }
+        }
+      },
+    }
+  )
+
+  //Chart6
+
+  const data6 = [
+    { result: 0, count: 12 },
+    { result: 1, count: 6 },
+  ];
+
+  new Chart(
+    document.getElementById('resultChart6'),
+    {
+      type: 'pie',
+      data: {
+        labels: [
+          'Yes',
+          'No',
+        ],
+        datasets: [
+          {
+            label: 'Number of Votes',
+            data: data6.map(row => row.count),
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ],
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Q6: Native American Swastika Makes Me Uncomfortable'
+          }
+        }
+      },
+    }
+  )
+})

@@ -1,38 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js"></script>
+
     <title>Results</title>
     <style>
         body {
             background-image: url('img/background.jpg');
             background-repeat: no-repeat;
+            background-size: cover;
+
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <h1>Results</h1>
+    <h1>Results: Is it too far?</h1>
 
-    <canvas id="resultChart" width="400" height="400"></canvas>
+    <section class="project_container row">
 
-    <h5>Number of People Voted Yes:</h5><p id="yes-counter" class="project__count"> 0 </p>
-    <h5>Number of People Voted No:</h5><p  id="no-counter" class="project__count"> 0 </p>
-
-    <div  class="total-tracker">
-        <div id="total-info"> </div>
-    </div>
-
-    <!-- <section class="row">
-        <div class="column middle-2">
-            <button class="next-button" id="next-b" role="button">Next Question</button>
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart1"></canvas>
+            </div>
         </div>
-    </section> -->
-    
-    <script type="module" src="chart.js"></script>
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart2"></canvas>
+            </div>
+
+        </div>
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart3"></canvas>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="project_container row">
+        <div class="s-explain" class="column" style="margin: auto">
+            <img src="img/1C.png" class="sup-pic" />
+            <p style="margin: 10%">Western tourists feeling offended in Asian countries</p>
+        </div>
+        <div class="s-explain" class="column" style="margin: auto">
+            <img src="img/2A.png" class="sup-pic" />
+            <p style="margin: 10%">Jojo Rabbit's Divided Interpertation</p>
+
+        </div>
+        <div class="s-explain" class="column" style="margin: auto">
+            <img src="img/3A.gif" class="sup-pic" />
+            <p style="margin: 10%">卍 character in Japanese society means "cool" stuff</p>
+
+
+        </div>
+    </section>
+    <br></br>
+    <br></br>
+    <br></br>
+
+    <section class="project_container row">
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart4"></canvas>
+            </div>
+        </div>
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart5"></canvas>
+            </div>
+        </div>
+        <div class="column">
+            <div style="width: 25vw; height: 50vh; margin: auto">
+                <canvas id="resultChart6"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section class="project_container row">
+        <div class="s-explain" style="margin: auto">
+            <img src="img/4.jpg" class="sup-pic" />
+            <p style="margin: 10%">Swastika Over the World</p>
+
+        </div>
+        <div class="s-explain" style="margin: auto">
+            <img src="img/5A.png" class="sup-pic" />
+            <p style="margin: 10%">Red Swastika Society, The Red Cross in Asia</p>
+
+        </div>
+        <div class="s-explain" style="margin: auto">
+            <img src="img/6A.png" class="sup-pic" />
+            <p style="margin: 10%">Native American and their Swastika</p>
+
+        </div>
+    </section>
+
+
     <script src="app.js"></script>
 </body>
+
 </html>

@@ -41,4 +41,4 @@ app.listen(3000, () => {
 })
 
 //neDB notation: https://github.com/louischatriot/nedb
-db.remove({}, {multi: true}, function (err, numRemoved) {})
+// db.remove({}, {multi: true}, function (err, numRemoved) {})
